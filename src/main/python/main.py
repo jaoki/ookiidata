@@ -7,13 +7,13 @@ TARGET_DIR = PROJECT_ROOT + "/target"
 RESOURCES_DIR = PROJECT_ROOT + "/src/main/resources"
 
 def replace_to_jp(root):
-    ens_parents = root.findall(".//*[@ok_lang='en']/..")
-    for ens_parent in ens_parents:
-        en = ens_parent.find("*[@ok_lang='en']")
-        jp = en.find("*[@ok_lang='jp']")
+    lang_roots = root.findall(".//*[@ok_lang='root']")
+    for lang_root in lang_roots:
+        en = lang_root.find("*[@ok_lang='en']")
+        jp = lang_root.find("*[@ok_lang='jp']")
         if jp is not None:
-            ens_parent.remove(en)
-            ens_parent.append(jp)
+            lang_root.remove(en)
+#             ens_parent.append(jp)
 #         parent = en.getparent()
 
 
@@ -32,7 +32,9 @@ def main():
 #         ens_parent.remove(target)
 
 #     root.remove(a)
-    print minidom.parseString(ET.tostring(root)).toprettyxml()
+    html = minidom.parseString(ET.tostring(root)).toprettyxml()
+    with open(TARGET_DIR + '/index.html', 'w') as the_file:
+        the_file.write(html.encode("utf-8"))
 
 
     print "hello"
